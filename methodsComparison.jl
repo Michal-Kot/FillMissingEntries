@@ -9,10 +9,12 @@ using PyPlot
 using RCall
 using CSV
 
-include("folder_path/methodsComparison_auxFun.jl")
-include("folder_path/method_IFP.jl")
-include("folder_path/method_exact.jl")
-include("folder_path/method_mcmcsampling.jl")
+foreach(readdir(Base.source_dir() * "\\methods"; join=true)) do f # load required structs
+    if f[(end-2):end] == ".jl"
+        println(f)
+        include(f)
+    end
+end
 
 function compare_approaches(k_range, N_range, percentile_cutoff_range, rho_range, niter)
     results = []
